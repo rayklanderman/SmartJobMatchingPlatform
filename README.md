@@ -1,9 +1,5 @@
-Here’s a professional and complete `README.md` for your GitHub project [Smart Job Matching Platform](https://github.com/rayklanderman/SmartJobMatchingPlatform.git), tailored to your team's structure, tech goals, and sprint work plan:
 
----
-
-```markdown
-# 💼 Smart Job Matching Platform (Kenya)
+# 💼 Smart Job Matching Platform 
 
 > A data-driven platform that uses AI to match unemployed youth in Kenya with job opportunities tailored to their skills, education, and interests.
 
