@@ -6,7 +6,11 @@
   "rewrites": [
     {
       "source": "/api/adzuna/:path*",
-      "destination": "https://api.adzuna.com/v1/api/jobs/:path*"
+      "destination": "https://api.adzuna.com/:path*"
     }
-  ]
+  ],
+  "env": {
+    "VITE_ADZUNA_APP_ID": "81b96f07",
+    "VITE_ADZUNA_API_KEY": "2ee8d43bf000ff0aae2265d50dfb9d25"
+  }
 }

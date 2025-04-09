@@ -44,6 +44,22 @@ interface CategoriesResponse {
 const appId = import.meta.env.VITE_ADZUNA_APP_ID;
 const apiKey = import.meta.env.VITE_ADZUNA_API_KEY;
 
+// Create an axios instance with retry logic
+const api = axios.create({
+  baseURL: '/api/adzuna/v1',
+  timeout: 10000
+});
+
+// Add retry logic for rate limits
+api.interceptors.response.use(undefined, async (error) => {
+  if (error.response?.status === 429) {
+    // Wait for 2 seconds before retrying
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return api.request(error.config);
+  }
+  return Promise.reject(error);
+});
+
 export const getCategories = async (country: CountryCode): Promise<CategoriesResponse> => {
   // If country is not supported, return empty categories
   if (!SUPPORTED_COUNTRIES.includes(country as SupportedCountry)) {
@@ -53,8 +69,8 @@ export const getCategories = async (country: CountryCode): Promise<CategoriesRes
   }
 
   try {
-    const response = await axios.get<CategoriesResponse>(
-      `/api/adzuna/api/jobs/${country}/categories`,
+    const response = await api.get<CategoriesResponse>(
+      `/api/jobs/${country}/categories`,
       {
         params: {
           app_id: appId,
@@ -92,16 +108,16 @@ export const searchJobs = async (params: SearchParams): Promise<{ jobs: AdzunaJo
   }
 
   try {
-    const response = await axios.get<AdzunaResponse>(
-      `/api/adzuna/api/jobs/${params.country}/search/${params.page || 1}`,
+    const response = await api.get<AdzunaResponse>(
+      `/api/jobs/${params.country}/search/${params.page || 1}`,
       {
         params: {
           app_id: appId,
           app_key: apiKey,
           results_per_page: params.resultsPerPage || 10,
-          what: params.what,
-          where: params.where,
-          category: params.category,
+          what: params.what || '',
+          where: params.where || '',
+          category: params.category || '',
           max_days_old: params.maxDaysOld || 30,
           sort_by: params.sortBy || 'date'
         }
