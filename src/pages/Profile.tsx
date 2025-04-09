@@ -13,6 +13,19 @@ export default function Profile() {
     { id: '3', name: 'UI/UX Design', level: 'Beginner' },
   ]);
 
+  const addSkill = () => {
+    const newSkill: Skill = {
+      id: (skills.length + 1).toString(),
+      name: 'New Skill',
+      level: 'Beginner'
+    };
+    setSkills([...skills, newSkill]);
+  };
+
+  const removeSkill = (id: string) => {
+    setSkills(skills.filter(skill => skill.id !== id));
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-3xl mx-auto">
@@ -75,16 +88,29 @@ export default function Profile() {
                         <p className="text-sm text-gray-500">{skill.level}</p>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <button className="text-gray-400 hover:text-gray-500">
+                        <button 
+                          className="text-gray-400 hover:text-gray-500"
+                          onClick={() => setSkills(skills.map(s => 
+                            s.id === skill.id 
+                              ? { ...s, level: s.level === 'Beginner' ? 'Intermediate' : s.level === 'Intermediate' ? 'Advanced' : 'Beginner' }
+                              : s
+                          ))}
+                        >
                           Edit
                         </button>
-                        <button className="text-red-400 hover:text-red-500">
+                        <button 
+                          className="text-red-400 hover:text-red-500"
+                          onClick={() => removeSkill(skill.id)}
+                        >
                           Remove
                         </button>
                       </div>
                     </div>
                   ))}
-                  <button className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 hover:text-gray-700 hover:border-gray-400">
+                  <button 
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 hover:text-gray-700 hover:border-gray-400"
+                    onClick={addSkill}
+                  >
                     + Add Skill
                   </button>
                 </div>
