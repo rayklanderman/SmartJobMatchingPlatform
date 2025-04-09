@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/adzuna/:path*",
+      "destination": "https://api.adzuna.com/v1/api/jobs/:path*"
+    }
+  ],
+  "env": {
+    "VITE_ADZUNA_APP_ID": "@adzuna-app-id",
+    "VITE_ADZUNA_API_KEY": "@adzuna-api-key"
+  }
+}
